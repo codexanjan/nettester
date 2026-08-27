@@ -1,32 +1,35 @@
-# React + TypeScript + Vite
+# 🎨 NetScope Pro — Frontend Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A high-performance React 18, TypeScript, and Tailwind CSS client engineered for high-precision, real-time network speed testing.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Smooth Speedometer Gauge**: Real-time SVG gauge with logarithmic curve and Exponential Moving Average (EMA) needle interpolation.
+- **Continuous Telemetry Graph**: High-resolution time-series charting showing live download and upload Mbps trajectories.
+- **Dual-Engine Support**: Seamlessly tests against Global Edge CDNs (Cloudflare Speed API) and dedicated NetScope FastAPI nodes.
+- **Smart Server Selector**: Measures real-time latency across all nodes with 1-click auto-routing to the lowest-ping edge.
+- **5-Pillar Quality Scoring**: Transparent, multi-factor scoring (Speed, Latency, Jitter, Stability, Failure Rate).
+- **Diagnostics & AI Network Doctor**: Actionable root-cause insights for buffering, latency spikes, and ISP degradation.
+- **Local-First History**: IndexedDB storage with zero tracking, instant 1-click purge, and JSON/CSV export.
 
-## React Compiler
+## 🛠️ Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **React 18** with functional components & hooks
+- **TypeScript** for end-to-end type safety
+- **Vite** for fast HMR and optimized production builds
+- **Tailwind CSS** for responsive dark-mode glassmorphic styling
+- **Lucide Icons** & **Recharts** for visualizations
+- **Canvas-Confetti** for celebratory milestone animations
 
-## Expanding the Oxlint configuration
+## 💻 Development
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+```bash
+# Install dependencies
+npm install
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+# Start Vite dev server on port 5173
+npm run dev
+
+# Production build
+npm run build
 ```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.

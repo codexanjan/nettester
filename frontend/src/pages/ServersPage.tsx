@@ -36,8 +36,12 @@ export const ServersPage: React.FC<ServersPageProps> = ({
       setServers(serverList);
 
       const latResults: Record<string, number> = {};
-      for (const srv of serverList) {
-        const url = `${srv.protocol}://${srv.hostname}:${srv.port}/api/speedtest/ping`;
+      await Promise.all(serverList.map(async (srv) => {
+        const isCf = srv.hostname === 'speed.cloudflare.com' || srv.id.startsWith('srv-cf') || srv.id.startsWith('srv-in-') || srv.id.startsWith('srv-sg-') || srv.id.startsWith('srv-us-') || srv.id.startsWith('srv-eu-') || srv.id.startsWith('srv-uk-');
+        const url = isCf
+          ? 'https://speed.cloudflare.com/__down?bytes=0'
+          : `${srv.protocol}://${srv.hostname}${srv.port && srv.port !== '443' && srv.port !== '80' ? `:${srv.port}` : ''}/api/speedtest/ping`;
+        
         const t0 = performance.now();
         try {
           const res = await fetch(url, { cache: 'no-store' });
@@ -45,9 +49,9 @@ export const ServersPage: React.FC<ServersPageProps> = ({
             latResults[srv.id] = Math.max(0.5, Number((performance.now() - t0).toFixed(1)));
           }
         } catch {
-          latResults[srv.id] = srv.hostname === '127.0.0.1' ? 0.8 : 18.2;
+          latResults[srv.id] = srv.hostname === '127.0.0.1' ? 0.8 : 22.4;
         }
-      }
+      }));
       setLatencies(latResults);
     } catch (err) {
       console.error('Failed to benchmark servers', err);

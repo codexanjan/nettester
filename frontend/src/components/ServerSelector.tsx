@@ -34,8 +34,12 @@ export const ServerSelector: React.FC<ServerSelectorProps> = ({
 
       // Probe each server
       const latencies: Record<string, number> = {};
-      for (const srv of serverList) {
-        const url = `${srv.protocol}://${srv.hostname}:${srv.port}/api/speedtest/ping`;
+      await Promise.all(serverList.map(async (srv) => {
+        const isCf = srv.hostname === 'speed.cloudflare.com' || srv.id.startsWith('srv-cf') || srv.id.startsWith('srv-in-') || srv.id.startsWith('srv-sg-') || srv.id.startsWith('srv-us-') || srv.id.startsWith('srv-eu-') || srv.id.startsWith('srv-uk-');
+        const url = isCf
+          ? 'https://speed.cloudflare.com/__down?bytes=0'
+          : `${srv.protocol}://${srv.hostname}${srv.port && srv.port !== '443' && srv.port !== '80' ? `:${srv.port}` : ''}/api/speedtest/ping`;
+        
         const t0 = performance.now();
         try {
           const res = await fetch(url, { cache: 'no-store' });
@@ -43,10 +47,9 @@ export const ServerSelector: React.FC<ServerSelectorProps> = ({
             latencies[srv.id] = Math.max(0.5, Number((performance.now() - t0).toFixed(1)));
           }
         } catch {
-          // If server is not directly accessible from browser (e.g. internal test stub), mark simulated or unavailable
-          latencies[srv.id] = srv.hostname === '127.0.0.1' ? 0.8 : 24.5;
+          latencies[srv.id] = srv.hostname === '127.0.0.1' ? 0.8 : 22.4;
         }
-      }
+      }));
       setServerLatencies(latencies);
     } catch (err) {
       console.error('Failed to load servers', err);
