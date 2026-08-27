@@ -5,8 +5,7 @@ import {
   Lock, 
   Database, 
   UploadCloud, 
-  EyeOff, 
-  CheckCircle2 
+  EyeOff 
 } from 'lucide-react';
 import { clearLocalTestResults } from '../services/storage';
 

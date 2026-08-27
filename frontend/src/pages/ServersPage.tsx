@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   Server as ServerIcon, 
   Globe, 
   RefreshCw, 
-  Zap, 
   CheckCircle2, 
-  Clock, 
-  ShieldCheck, 
   Loader2 
 } from 'lucide-react';
 import { Server } from '../types';
@@ -25,11 +22,7 @@ export const ServersPage: React.FC<ServersPageProps> = ({
   const [latencies, setLatencies] = useState<Record<string, number>>({});
   const [probing, setProbing] = useState<boolean>(false);
 
-  useEffect(() => {
-    loadAndBenchmark();
-  }, []);
-
-  const loadAndBenchmark = async () => {
+  const loadAndBenchmark = useCallback(async () => {
     setProbing(true);
     try {
       const serverList = await fetchServers();
@@ -58,7 +51,11 @@ export const ServersPage: React.FC<ServersPageProps> = ({
     } finally {
       setProbing(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadAndBenchmark();
+  }, [loadAndBenchmark]);
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6 animate-fade-in">

@@ -4,12 +4,7 @@ import {
   Square, 
   ArrowDown, 
   ArrowUp, 
-  Activity, 
-  Gauge, 
-  ShieldCheck, 
-  Radio, 
-  RotateCcw, 
-  Globe 
+  Activity 
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { 
@@ -29,7 +24,7 @@ import { ResultCard } from '../components/ResultCard';
 import { NetworkInfoCard } from '../components/NetworkInfoCard';
 import { DiagnosticsModal } from '../components/DiagnosticsModal';
 import { saveLocalTestResult } from '../services/storage';
-import { syncTestResultToBackend, fetchNetworkInfo, fetchServers } from '../services/api';
+import { syncTestResultToBackend, fetchNetworkInfo } from '../services/api';
 
 interface DashboardProps {
   currentServer: Server | null;
@@ -173,12 +168,27 @@ export const Dashboard: React.FC<DashboardProps> = ({
               ))}
             </div>
 
-            {/* Test Stage Indicator */}
-            <div className="flex items-center space-x-2">
-              <div className={`w-2.5 h-2.5 rounded-full ${isTesting ? 'bg-cyan-400 animate-ping' : 'bg-slate-600'}`} />
-              <span className="text-xs font-mono font-bold tracking-wider uppercase text-slate-300">
-                Stage: <strong className="text-cyan-400">{stage.replace('_', ' ')}</strong>
-              </span>
+            {/* Center Server Badge & Test Stage Indicator */}
+            <div className="flex flex-wrap items-center gap-3">
+              {currentServer && (
+                <button
+                  onClick={onOpenServerModal}
+                  disabled={isTesting}
+                  className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700 hover:border-cyan-500/50 text-slate-300 hover:text-white text-xs font-semibold transition-all"
+                  title="Click to change speed test server"
+                >
+                  <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+                  <span className="truncate max-w-[150px] sm:max-w-[200px]">{currentServer.name}</span>
+                  <span className="text-[10px] text-cyan-400 font-bold uppercase">Change</span>
+                </button>
+              )}
+
+              <div className="flex items-center space-x-2">
+                <div className={`w-2.5 h-2.5 rounded-full ${isTesting ? 'bg-cyan-400 animate-ping' : 'bg-slate-600'}`} />
+                <span className="text-xs font-mono font-bold tracking-wider uppercase text-slate-300">
+                  Stage: <strong className="text-cyan-400">{stage.replace('_', ' ')}</strong>
+                </span>
+              </div>
             </div>
           </div>
 

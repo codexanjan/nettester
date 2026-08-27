@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { X, Server as ServerIcon, Globe, Zap, Check, RefreshCw, Loader2 } from 'lucide-react';
 import { Server } from '../types';
 import { fetchServers } from '../services/api';
@@ -20,13 +20,7 @@ export const ServerSelector: React.FC<ServerSelectorProps> = ({
   const [probing, setProbing] = useState<boolean>(false);
   const [serverLatencies, setServerLatencies] = useState<Record<string, number>>({});
 
-  useEffect(() => {
-    if (isOpen) {
-      loadAndProbeServers();
-    }
-  }, [isOpen]);
-
-  const loadAndProbeServers = async () => {
+  const loadAndProbeServers = useCallback(async () => {
     setProbing(true);
     try {
       const serverList = await fetchServers();
@@ -56,7 +50,13 @@ export const ServerSelector: React.FC<ServerSelectorProps> = ({
     } finally {
       setProbing(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      loadAndProbeServers();
+    }
+  }, [isOpen, loadAndProbeServers]);
 
   const handleAutoSelectBest = () => {
     if (servers.length === 0) return;

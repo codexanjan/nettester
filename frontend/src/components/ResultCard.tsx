@@ -9,7 +9,6 @@ import {
   Stethoscope, 
   Check, 
   Clock, 
-  ShieldCheck, 
   Zap 
 } from 'lucide-react';
 import { TestResultRecord, QualityScore } from '../types';

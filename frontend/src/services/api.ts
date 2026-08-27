@@ -4,7 +4,6 @@ import {
   DiagnosticReport,
   AIDoctorResponse,
   TestResultRecord,
-  AnalyticsData,
   AdminMetrics,
 } from '../types';
 

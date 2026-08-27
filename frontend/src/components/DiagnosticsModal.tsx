@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   X, 
   Stethoscope, 
   Bot, 
   AlertTriangle, 
   CheckCircle2, 
-  Info, 
-  HelpCircle, 
   Sparkles, 
   Loader2 
 } from 'lucide-react';
@@ -29,13 +27,8 @@ export const DiagnosticsModal: React.FC<DiagnosticsModalProps> = ({
   const [loadingRule, setLoadingRule] = useState<boolean>(false);
   const [loadingAi, setLoadingAi] = useState<boolean>(false);
 
-  React.useEffect(() => {
-    if (isOpen && result) {
-      loadDeterministicDiagnostics();
-    }
-  }, [isOpen, result]);
-
-  const loadDeterministicDiagnostics = async () => {
+  const loadDeterministicDiagnostics = useCallback(async () => {
+    if (!result) return;
     setLoadingRule(true);
     try {
       const data = await fetchDiagnosticsReport(
@@ -48,11 +41,17 @@ export const DiagnosticsModal: React.FC<DiagnosticsModalProps> = ({
       );
       setReport(data);
     } catch (err) {
-      console.error('Failed to load diagnostics', err);
+      console.error('Failed to evaluate diagnostics', err);
     } finally {
       setLoadingRule(false);
     }
-  };
+  }, [result]);
+
+  useEffect(() => {
+    if (isOpen && result) {
+      loadDeterministicDiagnostics();
+    }
+  }, [isOpen, result, loadDeterministicDiagnostics]);
 
   const handleRunAIDoctor = async () => {
     setLoadingAi(true);

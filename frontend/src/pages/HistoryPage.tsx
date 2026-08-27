@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   History, 
   Trash2, 
@@ -8,8 +8,6 @@ import {
   ArrowUp, 
   Activity, 
   Search, 
-  ShieldCheck,
-  Award,
   ChevronRight
 } from 'lucide-react';
 import { TestResultRecord } from '../types';
@@ -29,16 +27,16 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ onSelectResult }) => {
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadHistory();
-  }, []);
-
-  const loadHistory = async () => {
+  const loadHistory = useCallback(async () => {
     setLoading(true);
     const data = await getLocalTestResults();
     setResults(data);
     setLoading(false);
-  };
+  }, []);
+
+  useEffect(() => {
+    loadHistory();
+  }, [loadHistory]);
 
   const handleClearHistory = async () => {
     if (window.confirm('Are you sure you want to delete all stored local test history? This action cannot be undone.')) {

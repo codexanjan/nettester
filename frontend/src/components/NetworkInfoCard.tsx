@@ -1,5 +1,5 @@
 import React from 'react';
-import { Globe, Shield, Wifi, Server, AlertCircle } from 'lucide-react';
+import { Shield, Wifi, AlertCircle } from 'lucide-react';
 import { NetworkInfo, Server as ServerType } from '../types';
 
 interface NetworkInfoCardProps {

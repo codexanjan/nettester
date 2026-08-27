@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   Stethoscope, 
   Bot, 
   Sparkles, 
   AlertTriangle, 
   CheckCircle2, 
-  HelpCircle, 
-  ArrowRight, 
   Loader2 
 } from 'lucide-react';
 import { DiagnosticReport, AIDoctorResponse, TestResultRecord } from '../types';
@@ -20,11 +18,7 @@ export const DiagnosticsPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [loadingAi, setLoadingAi] = useState<boolean>(false);
 
-  useEffect(() => {
-    loadDiagnostics();
-  }, []);
-
-  const loadDiagnostics = async () => {
+  const loadDiagnostics = useCallback(async () => {
     setLoading(true);
     try {
       const records = await getLocalTestResults();
@@ -46,7 +40,11 @@ export const DiagnosticsPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadDiagnostics();
+  }, [loadDiagnostics]);
 
   const handleRunAiDoctor = async () => {
     if (!latestResult) return;

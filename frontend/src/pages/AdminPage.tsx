@@ -1,15 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   Lock, 
-  Unlock, 
   Cpu, 
   HardDrive, 
   Activity, 
-  Server as ServerIcon, 
-  ShieldAlert, 
   RefreshCw, 
-  CheckCircle2, 
-  XCircle, 
   Layers 
 } from 'lucide-react';
 import { AdminMetrics } from '../types';
@@ -22,12 +17,11 @@ export const AdminPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleAuthenticate = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
+  const handleAuthenticate = useCallback(async (keyToUse?: string) => {
     setLoading(true);
     setError(null);
     try {
-      const data = await fetchAdminMetrics(adminKey);
+      const data = await fetchAdminMetrics(keyToUse || adminKey);
       setMetrics(data);
       setIsAuthenticated(true);
     } catch (err: any) {
@@ -36,12 +30,11 @@ export const AdminPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [adminKey]);
 
   useEffect(() => {
-    // Attempt auto-login if key is default
-    handleAuthenticate();
-  }, []);
+    handleAuthenticate('netscope-admin-secret-key-2026');
+  }, [handleAuthenticate]);
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-fade-in">
@@ -82,7 +75,7 @@ export const AdminPage: React.FC = () => {
             Enter your administrative authorization key to inspect cluster health.
           </p>
 
-          <form onSubmit={handleAuthenticate} className="space-y-4">
+          <form onSubmit={(e) => { e.preventDefault(); handleAuthenticate(); }} className="space-y-4">
             <input
               type="password"
               value={adminKey}

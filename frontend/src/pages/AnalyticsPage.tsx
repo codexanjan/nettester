@@ -1,14 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   BarChart3, 
-  Trophy, 
-  TrendingUp, 
-  TrendingDown, 
-  Clock, 
-  Zap, 
-  Activity, 
-  ShieldCheck, 
-  AlertCircle 
+  Trophy 
 } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -25,18 +18,15 @@ import { getLocalAnalytics } from '../services/storage';
 export const AnalyticsPage: React.FC = () => {
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
   const [timeframe, setTimeframe] = useState<'24h' | '7d' | '30d'>('7d');
-  const [loading, setLoading] = useState<boolean>(true);
+
+  const loadAnalytics = useCallback(async () => {
+    const data = await getLocalAnalytics();
+    setAnalytics(data);
+  }, []);
 
   useEffect(() => {
     loadAnalytics();
-  }, []);
-
-  const loadAnalytics = async () => {
-    setLoading(true);
-    const data = await getLocalAnalytics();
-    setAnalytics(data);
-    setLoading(false);
-  };
+  }, [loadAnalytics]);
 
   const activeSummary = timeframe === '24h' 
     ? analytics?.summary_24h 

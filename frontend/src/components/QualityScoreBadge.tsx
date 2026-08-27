@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, Award, Info } from 'lucide-react';
+import { Award } from 'lucide-react';
 import { QualityScore } from '../types';
 
 interface QualityScoreBadgeProps {
@@ -7,7 +7,7 @@ interface QualityScoreBadgeProps {
   size?: 'sm' | 'md' | 'lg';
 }
 
-export const QualityScoreBadge: React.FC<QualityScoreBadgeProps> = ({ score, size = 'md' }) => {
+export const QualityScoreBadge: React.FC<QualityScoreBadgeProps> = ({ score }) => {
   const getRatingColor = () => {
     switch (score.rating) {
       case 'Excellent':
