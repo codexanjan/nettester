@@ -142,14 +142,22 @@ DEFAULT_SERVERS = [
 ]
 
 async def seed_servers_if_empty(db: AsyncSession):
-    """Seed default servers if registry is empty"""
+    """Seed or update default servers to ensure valid resolvable endpoints."""
     result = await db.execute(select(Server))
-    existing = result.scalars().all()
-    if not existing:
-        for srv in DEFAULT_SERVERS:
-            server_obj = Server(**srv)
+    existing_map = {srv.id: srv for srv in result.scalars().all()}
+    
+    for srv_dict in DEFAULT_SERVERS:
+        srv_id = srv_dict["id"]
+        if srv_id in existing_map:
+            # Update fields to ensure latest resolvable endpoints
+            srv_obj = existing_map[srv_id]
+            for k, v in srv_dict.items():
+                setattr(srv_obj, k, v)
+        else:
+            server_obj = Server(**srv_dict)
             db.add(server_obj)
-        await db.commit()
+            
+    await db.commit()
 
 @router.get("", response_model=List[ServerOut])
 async def list_servers(db: AsyncSession = Depends(get_db)):
