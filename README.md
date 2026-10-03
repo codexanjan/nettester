@@ -7,6 +7,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.5+-3178C6.svg?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-3.4+-38B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-009688?style=for-the-badge&logo=vercel&logoColor=white)](https://netscope.vercel.app)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
 
 <br />
@@ -207,3 +208,13 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 ## 👨‍💻 Author & Contributions
 
 Created with ❤️ by **[codexanjan](https://github.com/codexanjan)**. Contributions, issues, and feature requests are welcome!
+
+---
+
+<div align="center">
+
+Made with ❤️ by [Anjan Shetty](https://github.com/codexanjan)
+
+[![GitHub](https://img.shields.io/badge/GitHub-codexanjan-181717?style=flat&logo=github)](https://github.com/codexanjan)
+
+</div>
